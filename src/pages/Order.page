@@ -1,0 +1,111 @@
+<apex:page controller="ProductController" >
+    <apex:slds />
+
+<apex:form > 
+   <apex:actionFunction name="setfirstName" action="{!setfirstName}" reRender="panel">
+    	<apex:param name="firstName" value="" assignTo="{!firstName}"/>
+    </apex:actionFunction>
+    <apex:actionFunction name="setlastname" action="{!setlastname}" reRender="panel">
+       	<apex:param name="lastname" value="" assignTo="{!lastname}"/>
+    </apex:actionFunction>
+    <apex:actionFunction name="setemail" action="{!setemail}" reRender="panel">
+       	<apex:param name="email" value="" assignTo="{!email}"/>
+    </apex:actionFunction>
+    <apex:actionFunction name="setunits" action="{!setunits}" reRender="panel">
+       	<apex:param name="units" value="" assignTo="{!units}"/>
+    </apex:actionFunction>
+    <apex:actionFunction action="{!fetchdata}" name="fetchdata" reRender="panel"/>
+</apex:form>   
+    
+<!-- HEADER -->    
+<div class="slds-page-header" style="text-align:center;">                   
+	<div class="slds-text-heading_large">
+    	<div class="slds-grid">
+  			<div class="slds-col slds-p-horizontal_medium">
+    			<span>Contact Information</span>
+  			</div>
+  			<div class="slds-col slds-p-horizontal_medium">
+    			<span>Product Information</span>
+  			</div>
+		</div> 
+    </div>
+</div>
+    
+<apex:pageMessages id="showmsg"></apex:pageMessages>
+    
+<apex:repeat value="{!Product}" var="product">    
+<div class="slds-grid">
+	<div class="slds-col slds-p-horizontal_medium" style="margin-left:200px">
+    	<span>
+      		<div class="slds-form-element " style="margin-left:200px; margin-top:150px;">
+  				<label class="slds-form-element__label" for="text-input-id-1" style="position: relative; top: +1.7em; left: -3em; font-size:16px;">Email</label>
+  				<div class="slds-form-element__control slds-size--1-of-2" >
+    				<input type="text" id="text-input-id-1" value="{!email}" onblur="setemail(this.value);" class="slds-input"/>
+  				</div>
+    			<label class="slds-form-element__label" for="text-input-id-1" style="position: relative; top: +1.7em; left: -5.3em; font-size:16px;">First name</label>
+  				<div class="slds-form-element__control slds-size--1-of-2" >
+    				<input type="text" id="text-input-id-1" value="{!firstname}" onblur="setfirstName(this.value);" class="slds-input"/>
+ 				</div>
+    			<label class="slds-form-element__label" for="text-input-id-1" style="position: relative; top: +1.7em; left: -5.3em; font-size:16px;">Last name</label>
+  				<div class="slds-form-element__control slds-size--1-of-2" >
+    				<input type="text" id="text-input-id-1" value ="{!lastName}" onblur="setlastname(this.value);" class="slds-input"/>
+  				</div>
+			</div>
+         </span>
+  	</div>
+    
+  	<div class="slds-col slds-p-horizontal_medium">
+    	<span>
+        	<div class="slds-form-element" style="margin-top:150px; margin-left:270px">
+ 				<span class="slds-form-element__label" style="position: relative; top: +1.75em; left: -7.3em; font-size:16px;">Product Name</span>
+  				<div class="slds-form-element__control">
+    				<span class="slds-form-element__static"><div class="slds-text-heading_small">{!product.Name}</div></span>
+  				</div>
+                <span class="slds-form-element__label" style="position: relative; top: +1.75em; left: -2.6em; font-size:16px;">Cost</span>
+  				<div class="slds-form-element__control">
+    				<span class="slds-form-element__static">
+                        <div class="slds-text-heading_small">
+                        	<apex:outputText value="{0, number, ##.## $}">
+          						<apex:param value="{!product.Unit_Price__c}"  />
+							</apex:outputText>
+                        </div>
+                    </span>
+  				</div>
+                      
+                <label class="slds-form-element__label" for="text-input-id-1" style="position: relative; top: +1.7em; left: -5.4em; font-size:16px;">Unit count</label>
+  				<div class="slds-form-element__control slds-size--1-of-2" >
+    				<input type="text" id="Count" class="slds-input" onblur="calculateAmount(this.value)"/>
+  				</div>
+                
+                <span class="slds-form-element__label" style="position: relative; top: +1.75em; left: -6.7em; font-size:16px;">Total amount</span>
+  					<div class="slds-form-element__control">
+                        <span class="slds-form-element__static"> 
+                            <div class="slds-text-heading_small">
+                            	<apex:outputText id="amount" value="{!units}"/>
+                            </div>
+                            <script>
+                            	function calculateAmount(count){
+                            		document.getElementById('{!$Component.amount}').innerHTML = ({!product.Unit_Price__c} * count) + ' $';
+                           			setunits(count);
+                            	}
+                            </script>
+						</span>
+  					</div>
+			</div>
+		</span>
+  	</div>
+</div> 
+</apex:repeat>
+
+     
+<div style="height: 180px;">
+	<div class="slds-docked-form-footer">
+    	<button type="button" class="slds-button slds-button_neutral">
+                <apex:outputLink value="{!$Page.ProductList}">To Shopping</apex:outputLink>
+        </button>
+        <apex:form >
+           		<apex:commandButton value="Buy" styleclass="slds-button slds-button_brand"  action="{!fetchdata}" rerender="showmsg" />
+ 		</apex:form>
+  	</div>
+</div> 
+</apex:page>

@@ -1,0 +1,69 @@
+<apex:page controller="GetProducts">
+    <apex:slds />
+     
+<table class="slds-table slds-table_bordered slds-table_cell-buffer">
+	<thead>
+    	<tr class="slds-text-title_caps">
+      		<th scope="col" style="width:50px">
+        		<div class="slds-truncate" title="Image">Image</div>
+      		</th>
+      		<th scope="col" style="width:130px">
+        		<div class="slds-truncate" title="Name"></div>
+      		</th>
+      		<th scope="col" style="width:120px">
+        		<div class="slds-truncate" title="Title">Title</div>
+      		</th>
+      		<th scope="col">
+        		<div class="slds-truncate" title="Description">Description</div>
+      		</th>
+      		<th scope="col">
+        		<div class="slds-truncate" title="Price">Price</div>
+      		</th>
+      		<th scope="col">
+        		<div class="slds-truncate" title="Buy"></div>
+      		</th>
+   	 	</tr>
+  	</thead> 
+  	<tbody>
+     	<apex:repeat value="{!Products}" var="product" id="theRepeat">
+   			<tr>
+      			<td data-label="Image" class="slds-cell-wrap">
+        			<div class="slds-truncate" title="Image">
+                        <apex:image url="{!product.Image_Url__c}" style="max-width:220px;max-height:150px;"/>
+                    </div>
+      			</td>
+       
+      			<td data-label="Name" class="slds-cell-wrap">
+          			<div class="slds-truncate" title="Name">
+                        <button class="slds-button"> 
+                            <apex:outputLink value="{!$Page.Product}?id={!product.Id}" target="_blank">{!product.Name}</apex:outputLink>
+                        </button>
+                    </div>
+      			</td>
+       
+      			<td data-label="Title" class="slds-cell-wrap">
+        			<div class="slds-truncate" title="Title" style ="white-space: normal; width:300px" >{!product.Title__c}</div>
+      			</td>
+       
+      			<td data-label="Description" class="slds-cell-wrap">
+        			<div class="slds-truncate" title="Description"> 
+                        <apex:outputText value="{!IF(LEN(product.Product_Description__c) > 100, LEFT(product.Product_Description__c, 97) + '...', 'product.Product_Description__c')}"/>
+            			<button class="slds-button">
+                            <apex:outputLink value="{!$Page.Product}?id={!product.Id}" target="_blank">More</apex:outputLink>
+                        </button>
+					</div>
+      			</td>
+       
+      			<td data-label="Price" class="slds-cell-wrap">
+        			<div class="slds-truncate" title="Price">{!product.Unit_Price__c} {!IF(product.Unit_Price__c != null , '$', 'unknown')}</div>
+      			</td>
+       
+      			<td data-label="Buy" class="slds-cell-wrap">
+        			<button type="button" class="slds-button slds-button_brand"><apex:outputLink value="{!$Page.Order}?id={!product.Id}">Buy</apex:outputLink></button>
+      			</td>
+    		</tr>
+      	</apex:repeat>
+  	</tbody>        
+</table>
+
+</apex:page>

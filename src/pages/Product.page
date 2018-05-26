@@ -1,0 +1,45 @@
+<apex:page controller="ProductController" >
+    <apex:slds />
+    
+    
+    <style type="text/css">    
+           #left { position: absolute;}
+           #right { position: absolute; right: 0; width: 50%; } 
+    </style>
+
+    
+
+    <apex:repeat value="{!Product}" var="product" id="theRepeat">
+		<div class="slds-page-header" style="text-align:center;">                   
+			<div class="slds-text-heading_large">{!product.Name}</div>
+		</div>
+    
+		<div id="left">
+        	<apex:image url="{!product.Image_Url__c}" style=" width:750px; height:570px; margin:40px; margin-left: 60px;"/>
+    	</div>
+
+    	<div id="right">
+        	<div style="margin:80px">
+        		<div class="slds-text-heading_medium">Amount:</div>
+        		<div class="slds-text-heading_small">{!product.Units_Available__c}</div>
+        		<div class="slds-text-heading_medium">Title:</div>
+        		<div class="slds-text-heading_small">{!product.Title__c}</div>
+        		<div class="slds-text-heading_medium">Description:</div>
+        		<div class="slds-text-heading_small">{!product.Product_Description__c}</div>      
+        	</div>
+       	</div>
+        
+  
+    
+    <div style="height: 180px;">
+  		<div class="slds-docked-form-footer">
+    		<button type="button" class="slds-button slds-button_neutral">
+                <apex:outputLink value="{!$Page.ProductList}">To Shopping</apex:outputLink>
+            </button>
+    		<button type="button" class="slds-button slds-button_brand">
+                <apex:outputLink value="{!$Page.Order}?id={!product.Id}">Buy</apex:outputLink>
+            </button> 
+  		</div>
+	</div>
+</apex:repeat>
+</apex:page>
